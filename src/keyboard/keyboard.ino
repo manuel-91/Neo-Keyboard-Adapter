@@ -29,8 +29,8 @@ void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *bu
 USB     Usb;
 
 HIDBoot<USB_HID_PROTOCOL_KEYBOARD | USB_HID_PROTOCOL_MOUSE> HidComposite(&Usb);
-HIDBoot<USB_HID_PROTOCOL_KEYBOARD>    HidKeyboard(&Usb);
-HIDBoot<USB_HID_PROTOCOL_MOUSE>    HidMouse(&Usb);
+//HIDBoot<USB_HID_PROTOCOL_KEYBOARD> HidKeyboard(&Usb);  // not needed, HidComposite can do that
+//HIDBoot<USB_HID_PROTOCOL_MOUSE>    HidMouse(&Usb);     // not needed, HidComposite can do that
 
 MouseRptParser PrsMouse;
 NeoReportParser PrsKbd;
@@ -41,7 +41,7 @@ void setup()
 	BootKeyboard.begin();
 	Consumer.begin();
   Serial.begin(115200); 
-  Serial.println("Start"  ) ; 
+  Serial.println("Start");
   Mouse.begin();  // Needed to send mouse actions to Host
   
 	// Flash LED rapidly in case USB Shield could not be initialized
@@ -59,8 +59,8 @@ void setup()
 
 	HidComposite.SetReportParser(0, &PrsKbd);
   HidComposite.SetReportParser(1, &PrsMouse);
-	//HidKeyboard.SetReportParser(0, &PrsKbd);
-  //HidMouse.SetReportParser(0, &PrsMouse);
+	//HidKeyboard.SetReportParser(0, &PrsKbd);  // not needed, HidComposite can do that
+  //HidMouse.SetReportParser(0, &PrsMouse);   // not needed, HidComposite can do that
 }
 
 void loop()
