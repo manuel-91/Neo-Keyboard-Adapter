@@ -13,25 +13,19 @@ void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *bu
 {
   // Run parent class method.
   MouseReportParser::Parse(hid, is_rpt_id, len, buf);
-
-  if (buf[0] == 1) {
-    if (len == 6) {
-      uint8_t mouseRpt[4];
-      mouseRpt[0] = buf[1];
-      mouseRpt[1] = buf[2];
-      mouseRpt[2] = buf[3];
-      mouseRpt[3] = buf[4];
-      HID().SendReport(1,mouseRpt,sizeof(mouseRpt));
-    }
-    else
-    {
-      // Serial.println("Unrecognized length");
-    }
+  Serial.println("MouseRptParser"); 
+  for (uint8_t i = 0; i < len ; i++) {
+    Serial.print(' '); Serial.print(buf[i], HEX);
   }
-  else
-  {
-    // when [buf[0] == 16h then it means we are scrolling horrizontally
-    // and all numbers have different meaning
+  Serial.println();
+  
+  if (len == 3) {
+    uint8_t mouseRpt[4];
+    mouseRpt[0] = buf[0];
+    mouseRpt[1] = buf[1];
+    mouseRpt[2] = buf[2];
+    mouseRpt[3] = 0;  // somehow this byte is missing with this lib
+    HID().SendReport(1,mouseRpt,sizeof(mouseRpt));
   }
 }
 
@@ -50,7 +44,10 @@ void setup()
 {
 	BootKeyboard.begin();
 	Consumer.begin();
-
+  Serial.begin(115200); 
+  Serial.println("Start"  ) ; 
+  Mouse.begin();
+    
 	// Flash LED rapidly in case USB Shield could not be initialized
 	if (Usb.Init() == -1) {
 		while (true) {
