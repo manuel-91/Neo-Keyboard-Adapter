@@ -59,8 +59,8 @@ void setup()
 
 	HidComposite.SetReportParser(0, &PrsKbd);
   HidComposite.SetReportParser(1, &PrsMouse);
-	HidKeyboard.SetReportParser(0, &PrsKbd);
-  HidMouse.SetReportParser(0, &PrsMouse);
+	//HidKeyboard.SetReportParser(0, &PrsKbd);
+  //HidMouse.SetReportParser(0, &PrsMouse);
 }
 
 void loop()
