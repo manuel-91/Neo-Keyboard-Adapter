@@ -28,7 +28,7 @@ void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *bu
 
 USB     Usb;
 
-HIDBoot < USB_HID_PROTOCOL_KEYBOARD | USB_HID_PROTOCOL_MOUSE > HidComposite(&Usb);
+HIDBoot<USB_HID_PROTOCOL_KEYBOARD | USB_HID_PROTOCOL_MOUSE> HidComposite(&Usb);
 HIDBoot<USB_HID_PROTOCOL_KEYBOARD>    HidKeyboard(&Usb);
 HIDBoot<USB_HID_PROTOCOL_MOUSE>    HidMouse(&Usb);
 
@@ -42,8 +42,8 @@ void setup()
 	Consumer.begin();
   Serial.begin(115200); 
   Serial.println("Start"  ) ; 
-  Mouse.begin();
-    
+  Mouse.begin();  // Needed to send mouse actions to Host
+  
 	// Flash LED rapidly in case USB Shield could not be initialized
 	if (Usb.Init() == -1) {
 		while (true) {

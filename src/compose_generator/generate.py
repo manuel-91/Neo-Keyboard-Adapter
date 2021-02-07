@@ -312,8 +312,8 @@ def main():
     print('===base.module===')
     parse('base.module')
 
-    #print('===dead_keys.module===')
-    #parse('dead_keys.module')
+    print('===dead_keys.module===')
+    parse('dead_keys.module')
 
     #print('===dead_greek.module===')
     #parse('dead_greek.module')
