@@ -1,5 +1,3 @@
-#include <usbhub.h>
-
 #include "NeoReportParser.h"
 
 
@@ -13,11 +11,6 @@ void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *bu
 {
   // Run parent class method.
   MouseReportParser::Parse(hid, is_rpt_id, len, buf);
-  Serial.println("MouseRptParser"); 
-  for (uint8_t i = 0; i < len ; i++) {
-    Serial.print(' '); Serial.print(buf[i], HEX);
-  }
-  Serial.println();
   
   if (len == 3) {
     uint8_t mouseRpt[4];
@@ -27,10 +20,13 @@ void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *bu
     mouseRpt[3] = 0;  // somehow this byte is missing with this lib
     HID().SendReport(1,mouseRpt,sizeof(mouseRpt));
   }
+  for (uint8_t i = 0; i < len; i++) {
+    Serial.print(' '); Serial.print(buf[i], HEX);
+  }
+  Serial.println();
 }
 
 USB     Usb;
-USBHub     Hub(&Usb);
 
 HIDBoot < USB_HID_PROTOCOL_KEYBOARD | USB_HID_PROTOCOL_MOUSE > HidComposite(&Usb);
 HIDBoot<USB_HID_PROTOCOL_KEYBOARD>    HidKeyboard(&Usb);
