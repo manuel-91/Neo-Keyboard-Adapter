@@ -1,18 +1,45 @@
-// #include <usbhub.h>
-
 #include "NeoReportParser.h"
 
-USB     Usb;
-//USBHub     Hub(&Usb);
-HIDBoot<USB_HID_PROTOCOL_KEYBOARD>    HidKeyboard(&Usb);
 
-NeoReportParser Prs;
+class MouseRptParser : public MouseReportParser
+{
+protected:
+    void Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *buf);
+};
+
+void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *buf)
+{
+  // Run parent class method.
+  MouseReportParser::Parse(hid, is_rpt_id, len, buf);
+  
+  if (len == 3) {
+    uint8_t mouseRpt[4];
+    mouseRpt[0] = buf[0];
+    mouseRpt[1] = buf[1];
+    mouseRpt[2] = buf[2];
+    mouseRpt[3] = 0;  // somehow this byte is missing with this lib
+    HID().SendReport(1,mouseRpt,sizeof(mouseRpt));
+  }
+}
+
+USB     Usb;
+
+HIDBoot<USB_HID_PROTOCOL_KEYBOARD | USB_HID_PROTOCOL_MOUSE> HidComposite(&Usb);
+//HIDBoot<USB_HID_PROTOCOL_KEYBOARD> HidKeyboard(&Usb);  // not needed, HidComposite can do that
+//HIDBoot<USB_HID_PROTOCOL_MOUSE>    HidMouse(&Usb);     // not needed, HidComposite can do that
+
+MouseRptParser PrsMouse;
+NeoReportParser PrsKbd;
+
 
 void setup()
 {
 	BootKeyboard.begin();
 	Consumer.begin();
-
+  Serial.begin(115200); 
+  Serial.println("Start");
+  Mouse.begin();  // Needed to send mouse actions to Host
+  
 	// Flash LED rapidly in case USB Shield could not be initialized
 	if (Usb.Init() == -1) {
 		while (true) {
@@ -26,7 +53,10 @@ void setup()
 	//The USB needs some time
 	delay(200);
 
-	HidKeyboard.SetReportParser(0, &Prs);
+	HidComposite.SetReportParser(0, &PrsKbd);
+  HidComposite.SetReportParser(1, &PrsMouse);
+	//HidKeyboard.SetReportParser(0, &PrsKbd);  // not needed, HidComposite can do that
+  //HidMouse.SetReportParser(0, &PrsMouse);   // not needed, HidComposite can do that
 }
 
 void loop()

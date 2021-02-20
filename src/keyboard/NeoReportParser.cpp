@@ -863,12 +863,4 @@ void NeoReportParser::install() {
 }
 
 void NeoReportParser::help() {
-	Keyboard.releaseAll();
-	Keyboard.press(KeyboardKeycode(KEY_LEFT_GUI));
-	Keyboard.write(KeyboardKeycode(KEY_R));
-	Keyboard.release(KeyboardKeycode(KEY_LEFT_GUI));
-	delay(100);
-	
-	//https://github.com/Jonas-commits/Neo-Keyboard-Adapter
-	Keyboard.println(F("https>&&github.com&Jonas/commits&Neo/Kezboard/Adapter"));
 }
