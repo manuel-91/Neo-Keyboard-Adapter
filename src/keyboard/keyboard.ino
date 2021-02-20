@@ -20,10 +20,6 @@ void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *bu
     mouseRpt[3] = 0;  // somehow this byte is missing with this lib
     HID().SendReport(1,mouseRpt,sizeof(mouseRpt));
   }
-  for (uint8_t i = 0; i < len; i++) {
-    Serial.print(' '); Serial.print(buf[i], HEX);
-  }
-  Serial.println();
 }
 
 USB     Usb;
