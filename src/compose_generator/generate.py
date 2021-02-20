@@ -315,17 +315,17 @@ def main():
     print('===dead_keys.module===')
     parse('dead_keys.module')
 
-    #print('===dead_greek.module===')
-    #parse('dead_greek.module')
+    print('===dead_greek.module===')
+    parse('dead_greek.module')
 
-    #print('===misc.module===')
-    #parse('misc.module')
+    print('===misc.module===')
+    parse('misc.module')
 
-    #print('\n\n===lang.module===')
-    #parse('lang.module')
+    print('\n\n===lang.module===')
+    parse('lang.module')
 
-    #print('\n\n===math.module===')
-    #parse('math.module')
+    print('\n\n===math.module===')
+    parse('math.module')
     with open('compose.gen.cpp', 'w') as f_gen_c:
         with open('compose.gen.h', 'w') as f_gen_h:
             dump_c(ROOT, f_gen_c, f_gen_h)
